@@ -15,7 +15,7 @@ class ParseNotOnCampus(HTMLParser):
 
     def get_result(self):
         if self._target is None:
-            return ValueError("Not Found")
+            raise ValueError("Not Found")
         return self._target
 
 
