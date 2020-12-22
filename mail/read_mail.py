@@ -27,7 +27,7 @@ class ReadMail:
         if status != 'OK':
             raise Exception
         # fetch the nth mail
-        response, message = self._imap.fetch(str(int(total_messages[0]) - num_from_top + 1), "(RFC822)")
+        response, message = self._imap.fetch(str(int(total_messages[0]) - num_from_top), "(RFC822)")
         # response should be "OK", actual email content is message[0][1]
         if response != "OK":
             raise Exception
@@ -43,9 +43,11 @@ class ReadMail:
             raise TypeError
         return decode_header(self._content.get("From"))[0][0]
 
-    def get_html(self):
+    def get_html(self) -> list:
         if self._content.is_multipart():
-            return [p.get_payload(decode=True).decode()  for p in self._content.walk()  if p.get_content_type() == "text/html"]
+            for p in self._content.walk():
+                if p.get_content_type() == "text/html":
+                    return p.get_payload(decode=True).decode()
         # TODO: handle non-multipart
 
     def get_plaintext(self):
@@ -53,6 +55,3 @@ class ReadMail:
             for p in self._content.walk():
                 if p.get_content_type() == "text/plain":
                     return p.get_payload(decode=True).decode()
-
-
-
