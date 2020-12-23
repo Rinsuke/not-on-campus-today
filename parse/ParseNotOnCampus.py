@@ -2,7 +2,6 @@ from html.parser import HTMLParser
 from urllib.parse import parse_qs
 from settings import SETTINGS
 
-
 TARGET_STRING_PREFIX = "mailto:" + SETTINGS["to"]
 
 
@@ -11,10 +10,14 @@ class ParseNotOnCampus(HTMLParser):
     def __init__(self):
         super().__init__()
         self._target = None
+        self._found_link = False
 
     def handle_starttag(self, tag, attrs):
-        if tag == "a" and attrs[0][1].startswith(TARGET_STRING_PREFIX):
+        if (not self._found_link
+                and tag == "a"
+                and attrs[0][1].startswith(TARGET_STRING_PREFIX)):
             self._target = attrs[0][1]
+            self._found_link = True
 
     def get_result(self):
         if self._target is None:
