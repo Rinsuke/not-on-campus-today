@@ -14,7 +14,7 @@ This script searches your inbox for this email and respond **Not on campus today
 
 ## Usage:
 ### Requirements:
- - Python 3.7+
+ - [Python 3.7+](https://www.python.org/downloads/)
  
 ### Run:
 1. Clone this repo or download as .zip
