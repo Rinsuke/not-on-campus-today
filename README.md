@@ -42,7 +42,7 @@ python3 ./main.py
 [Linux](https://www.howtogeek.com/101288/how-to-schedule-tasks-on-linux-an-introduction-to-crontab-files/) )
 
 
-### Warning:
+## Warning:
 Your password is stored **IN PLAIN TEXT**, anyone ***with access to your computer*** can see it. **Use this script at your own risk!**
 
 #### Always Practice Good Password Habit:
