@@ -1,10 +1,13 @@
 from html.parser import HTMLParser
 from urllib.parse import parse_qs
+from settings import SETTINGS
 
-TARGET_STRING_PREFIX = "mailto:uci@service-now.com?subject=Re%3A%20Not%20on%20campus%20today"
+
+TARGET_STRING_PREFIX = "mailto:" + SETTINGS["to"]
 
 
 class ParseNotOnCampus(HTMLParser):
+    """parse the link for 'not on campus today' """
     def __init__(self):
         super().__init__()
         self._target = None
@@ -22,5 +25,5 @@ class ParseNotOnCampus(HTMLParser):
 def parse_respond_mail(mail_html: str) -> dict:
     parser = ParseNotOnCampus()
     parser.feed(mail_html)
-
-    return parse_qs(parser.get_result())
+    response_query = parser.get_result()
+    return parse_qs(response_query)
