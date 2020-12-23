@@ -12,46 +12,38 @@ class ReadMail:
         self._content = None
 
     def _login(self):
+        """login to imap mail server"""
         try:
             self._imap.login(self._username, self._password)
-        except Exception as e:
-            # login failed
-            # TODO: handle exception
-            print(e)
+        except imaplib.IMAP4.error:
             raise
 
     def get_mail(self, num_from_top: int):
-        """get the nth email from inbox, assign self._content to a message object of the email's content"""
-        print(self._imap.list())
+        """get the nth-index email from inbox, assign self._content to a message object of the email's content"""
         status, total_messages = self._imap.select()
         if status != 'OK':
-            raise Exception
+            raise imaplib.IMAP4.error("Failed to load inbox, check your internet connection")
         # fetch the nth mail
         response, message = self._imap.fetch(str(int(total_messages[0]) - num_from_top), "(RFC822)")
         # response should be "OK", actual email content is message[0][1]
         if response != "OK":
-            raise Exception
+            raise imaplib.IMAP4.error("Failed to fetch email, check your internet connection")
         self._content = email.message_from_bytes(message[0][1])  # convert from byte to message object
 
-    def get_subject(self):
+    def get_subject(self) -> str:
+        """returns the subject of email"""
         if self._content is None:
-            raise TypeError
+            raise TypeError("Failed to load email, have you successfully fetched using get_mail method?")
         return decode_header(self._content["Subject"])[0][0]
 
-    def get_sender(self):
+    def get_sender(self) -> str:
+        """returns the sender of email"""
         if self._content is None:
-            raise TypeError
+            raise TypeError("Failed to load email, have you successfully fetched using get_mail method?")
         return decode_header(self._content.get("From"))[0][0]
 
-    def get_html(self) -> list:
-        if self._content.is_multipart():
-            for p in self._content.walk():
-                if p.get_content_type() == "text/html":
-                    return p.get_payload(decode=True).decode()
-        # TODO: handle non-multipart
-
-    def get_plaintext(self):
-        if self._content.is_multipart():
-            for p in self._content.walk():
-                if p.get_content_type() == "text/plain":
-                    return p.get_payload(decode=True).decode()
+    def get_html(self) -> str:
+        """returns the html part of email as string"""
+        for p in self._content.walk():
+            if p.get_content_type() == "text/html":
+                return p.get_payload(decode=True).decode()
