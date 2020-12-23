@@ -11,7 +11,13 @@ class SendMail:
         self._message = EmailMessage()
 
     def _login(self):
-        self._smtp.login(self._username, self._password)
+        """login to smtp server"""
+        try:
+            self._smtp.login(self._username, self._password)
+        except Exception:
+            raise smtplib.SMTPAuthenticationError(
+                "Login to SMTP server failed, check your email address and/or password"
+            )
 
     def set_subject(self, subject):
         self._message["Subject"] = subject
