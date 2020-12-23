@@ -27,8 +27,7 @@ This script searches your inbox for this email and respond **Not on campus today
 2. Make sure [IMAP](https://support.google.com/mail/answer/7126229) 
 and [allow less secure app access](https://myaccount.google.com/lesssecureapps) are turned on
 
-3. Open `settings.py` with your favorite text editor 
-~~```vi ./settings.py```~~
+3. Open `settings.py` with a text editor 
 
 4. Replace the first few lines with your email address and password
 
