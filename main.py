@@ -6,7 +6,7 @@ import parse.ParseNotOnCampus as parse
 from settings import SETTINGS
 from imaplib import IMAP4
 
-_DEBUG = False
+_DEBUG = True
 
 
 def read_inbox(mail: read.ReadMail) -> dict:
@@ -20,7 +20,7 @@ def read_inbox(mail: read.ReadMail) -> dict:
         if mail.get_subject() == SETTINGS["subject"] and (SETTINGS["from"] in mail.get_sender()):
             # found the correct email, parse html text and find response link
             try:
-                response = parse.parse_respond_mail(mail.get_html())
+                response = parse.parse_respond_mail(mail.get_html(), SETTINGS["response"])
             except ValueError:  # link not found, keep searching
                 continue
             else:  # found link

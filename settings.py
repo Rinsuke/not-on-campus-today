@@ -7,6 +7,11 @@ SETTINGS = {
   # if you have tons of email each day you want to increase this number
   "max_number_of_emails": 20,
 
+  # 0: not on campus today
+  # 1: no
+  # 2: yes
+  "response": 1,
+
   # do not modify these (unless something fails)
   "from": "uci@service-now.com",  # address where daily checkin email come from
   "to": "uci@service-now.com",    # address where you send responses to
