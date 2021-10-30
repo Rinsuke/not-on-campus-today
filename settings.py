@@ -10,7 +10,7 @@ SETTINGS = {
   # 0: not on campus today
   # 1: no
   # 2: yes
-  "response": 1,
+  "response": "No",
 
   # do not modify these (unless something fails)
   "from": "uci@service-now.com",  # address where daily checkin email come from
