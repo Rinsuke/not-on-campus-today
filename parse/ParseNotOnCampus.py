@@ -3,6 +3,7 @@ from urllib.parse import parse_qs
 from settings import SETTINGS
 
 TARGET_STRING_PREFIX = "mailto:" + SETTINGS["to"]
+TARGET_RESPONSE_PREFIX = "?subject=Re%3A%20" + SETTINGS["response"] + "&body="
 
 
 class ParseNotOnCampus(HTMLParser):
@@ -17,11 +18,9 @@ class ParseNotOnCampus(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if (not self._found_link
                 and tag == "a"
-                and attrs[0][1].startswith(TARGET_STRING_PREFIX)):
-            if self._found_link_count == self.response_type:
-                self._target = attrs[0][1]
-                self._found_link = True
-            self._found_link_count += 1
+                and attrs[0][1].startswith(TARGET_STRING_PREFIX + TARGET_RESPONSE_PREFIX)):
+            self._target = attrs[0][1]
+            self._found_link = True
 
     def get_result(self):
         if self._target is None:
